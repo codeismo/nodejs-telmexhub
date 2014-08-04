@@ -16,6 +16,7 @@
   },
   "homepage": "https://github.com/codeismo/nodejs-telmexhub",
   "dependencies": {
-    "express": "^4.7.3"
+    "express": "^4.7.3",
+    "nunjucks": "^1.0.5"
   }
 }
