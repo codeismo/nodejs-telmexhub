@@ -38,6 +38,17 @@ app.get("/informes",function(req,res){
 	res.send("informes aqui!");
 });
 
+//--- SOLUCION EJERCCIIO----
+app.get("/blog",function(req,res){
+	res.render("blog.html");
+});
+
+app.get("/usuario",function(req,res){
+	res.render("usuario.html");
+});
+
+
+
 
 
 
