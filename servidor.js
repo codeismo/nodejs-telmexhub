@@ -58,13 +58,23 @@ app.get("/articulo/:articuloId([0-9]+)", function(req, res) {
 //-------- SOLUCIOON EJERCCIO MAPEOS
 app.get("/usuario", function(req, res) {
 
-	modelos.Usuario.find(1).success(function(usuario) {
-
+	modelos.Usuario.find({
+		where:{id:2},
+		//
+		include:[{
+			model:modelos.Articulo,
+			//el parametro as debe de ser igual al del parametro
+			//as que usaron en principal.js
+			as:"articulos"
+		}]
+	}).success(function(usuario) {
+		
+		//la variable usuario ya tiene los articulos de ese USUARIO
+		//por medio de usuario.articulos
 		res.render("usuario.html", {
 			usuario : usuario
 		});
 	});
-
 });
 
 //ESCUCHA LA PETICION A LA RUTA
@@ -74,9 +84,21 @@ app.get("/informes", function(req, res) {
 });
 
 //--- SOLUCION EJERCCIIO FIND Y FINDALL ----
+// localhost:8080/blog?offset=3
 app.get("/blog", function(req, res) {
-
-	modelos.Articulo.findAll().success(function(articulos) {
+	
+	//req.query == LES DA ACCESO A TODOS LOS PARAMETROS
+	//QUE VIENEN EN EL QUERY STRING
+	//si no se pone el query string de offset
+	//toma el valor de 0
+	
+	var offset = req.query.offset;
+	
+	//COMO IMPLEMENTAR UN PAGINADOR jquery 
+	modelos.Articulo.findAll({
+		limit:3,
+		offset:offset
+	}).success(function(articulos) {
 		//articulos == son los renglones que encontro el metodo
 		//findAll
 
@@ -97,8 +119,3 @@ app.get("/blog", function(req, res) {
 	});
 
 });
-
-app.get("/usuario", function(req, res) {
-	res.render("usuario.html");
-});
-

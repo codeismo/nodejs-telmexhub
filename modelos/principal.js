@@ -78,6 +78,17 @@ var Categoria = sequelize.define("Categoria",{
 	tableName:"categorias"
 }); 
 
+// -------- EJEMPLO MAPEO 1-N ------------------
+// un usuario tiene muchos articulos
+Usuario.hasMany(Articulo,{
+	//foreignKey es la col que sirve de pegamento en la relacion 1-N
+	foreignKey:"usuario_id",
+	//cuando obtengan un objeto usuario
+	// pueden acceder a los articulos con usuario.articulos
+	as:"articulos"
+});
+
+
 //EXPORTANDO EL MODELO DE LA TABLA ARTICULO
 module.exports.Articulo = Articulo;
 module.exports.Usuario = Usuario;

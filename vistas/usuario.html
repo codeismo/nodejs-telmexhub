@@ -10,5 +10,10 @@
 		<p>NOMBRE USUARIO:{{usuario.nombre}}</p>
 		<p>EMAIL:{{usuario.email}}</p>
 		
+		<h2>articulos del usuario</h2>
+		{%for articulo in usuario.articulos%}
+		   <h3>{{articulo.titulo}}</h3>
+		{%endfor%}
+		
 	</body>
 </html>
