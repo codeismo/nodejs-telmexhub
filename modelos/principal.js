@@ -67,9 +67,21 @@ var Usuario = sequelize.define("Usuario",{
 	tableName:"usuarios"
 });
 
+//-------- SOLUCION EJERCICIO FIND ALL-----
+var Categoria = sequelize.define("Categoria",{
+	id:{
+		primaryKey:true,
+		type:Sequelize.INTEGER
+	},
+	nombre:Sequelize.TEXT
+},{
+	tableName:"categorias"
+}); 
+
 //EXPORTANDO EL MODELO DE LA TABLA ARTICULO
 module.exports.Articulo = Articulo;
 module.exports.Usuario = Usuario;
+module.exports.Categoria = Categoria;
 
 
 

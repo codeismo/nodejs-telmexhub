@@ -46,7 +46,7 @@ app.get("/articulo/:articuloId([0-9]+)", function(req, res) {
 		//este metodo se ejecuta cuando encuentra algo
 
 		//console.log("se encontro articulo:" + articulo.titulo);
-		
+
 		res.render("articulo.html", {
 			//asigno el objeto articulo a la propiedad:
 			articuloPrincipal : articulo
@@ -73,23 +73,29 @@ app.get("/informes", function(req, res) {
 	res.send("informes aqui!");
 });
 
-//--- SOLUCION EJERCCIIO----
+//--- SOLUCION EJERCCIIO FIND Y FINDALL ----
 app.get("/blog", function(req, res) {
-	
-	modelos.Articulo.findAll().success(function(articulos){
+
+	modelos.Articulo.findAll().success(function(articulos) {
 		//articulos == son los renglones que encontro el metodo
-		//findAll		
-		
-		//HACER CONSULTA A TODAS LAS CATEGORIAS, Y EN CALLBACK
-		//HACER EL RENDER
-		res.render("blog.html",{
-			//articulos encontrados se los pasamos a la vista
-			articulos:articulos,
-			categorias:[]
+		//findAll
+
+		modelos.Categoria.findAll().success(function(categorias) {
+			//aqui ya tengo todas las categorias
+			//tambien ya tengo todos articulos
+
+			//HACER CONSULTA A TODAS LAS CATEGORIAS, Y EN CALLBACK
+			//HACER EL RENDER
+			res.render("blog.html", {
+				//articulos encontrados se los pasamos a la vista
+				articulos : articulos,
+				categorias : categorias
+			});
+
 		});
-		
+
 	});
-	
+
 });
 
 app.get("/usuario", function(req, res) {

@@ -13,5 +13,12 @@
 		   	<h2>{{articulo.titulo}}</h2>	
 		{%endfor%}
 		
+		<h2>Categorias del blog:</h2>
+		<ul>
+			{%for categoria in categorias%}
+			  <li>{{categoria.nombre}}</li>
+			{%endfor%}
+		</ul>
+		
 	</body>
 </html>
