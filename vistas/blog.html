@@ -6,5 +6,12 @@
 	</head>
 	<body>
 		<h1>Bienvenido al Blog</h1>
+		
+		<!-- EL FOR QUE VIENE A CONTINUACION 
+			ES DEL SISTEMA DE TEMPLATES NUNJUCKS -->			
+		{%for articulo in articulos%}
+		   	<h2>{{articulo.titulo}}</h2>	
+		{%endfor%}
+		
 	</body>
 </html>

@@ -45,17 +45,31 @@ var Articulo = sequelize.define("Articulo",{
 	//le dice a sequelize que tenemos una columan titulo
 	//que es una cadena
 	titulo:Sequelize.TEXT,
-	contenido:Sequelize.TEXT
+	contenido:Sequelize.TEXT,
+	//Sequelize.DATE ES PARA FECHAS
+	fecha_creacion:Sequelize.DATE
 },{
 	//tableName le dicen cual es la tabla de la base
 	//que esta asociada a este objeto
 	tableName:"articulos"
 });
 
+//-------- SOLUCION EJERCICIO MAPEOS ------------
+var Usuario = sequelize.define("Usuario",{
+	id:{
+		primaryKey:true,
+		type:Sequelize.INTEGER
+	},
+	nombre:Sequelize.TEXT,
+	email:Sequelize.TEXT,
+	password:Sequelize.TEXT
+},{
+	tableName:"usuarios"
+});
+
 //EXPORTANDO EL MODELO DE LA TABLA ARTICULO
 module.exports.Articulo = Articulo;
-
-
+module.exports.Usuario = Usuario;
 
 
 

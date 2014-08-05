@@ -7,10 +7,22 @@
 	<body>
 		<h1>Artículo</h1>
 		
-		<!-- LAS LLAVES MAGICAS SON PARTE DE NUNJUCKS
+		{%if articuloPrincipal != null %}
+		
+		  <!-- LAS LLAVES MAGICAS SON PARTE DE NUNJUCKS
 			EL SISTEMA DE TEMPLATES 
 			--->
-		<h2>{{articuloPrincipal.titulo}}</h2>
+		  <h2>{{articuloPrincipal.titulo}}</h2>
+		  <p>{{articuloPrincipal.contenido}}</p>
+		  <p>FECHA:{{articuloPrincipal.fecha_creacion}}</p>
+		  
+		{%else%}
+		
+		    <h2>NO EXISTE EL ARTICULO</h2>
+		    
+		{%endif%}
+		
+		
 		
 	</body>
 </html>
