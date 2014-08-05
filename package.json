@@ -17,6 +17,9 @@
   "homepage": "https://github.com/codeismo/nodejs-telmexhub",
   "dependencies": {
     "express": "^4.7.3",
-    "nunjucks": "^1.0.5"
+    "nunjucks": "^1.0.5",
+    "pg": "^3.4.0",
+    "sequelize": "^1.7.9",
+    "sqlite3": "^2.2.4"
   }
 }

@@ -3,6 +3,11 @@
 var express = require("express");
 var nunjucks = require("nunjucks");
 
+//---- REQUERIMOS NUESTROS MODULOS
+var modelos = require("./modelos/principal.js");
+console.log("PRUEBA:" + modelos.PRUEBA); 
+
+
 //INVOCAMOS A LA FUNCION DE EXPRESS PARA CREAR UN SERVIDOR WEB
 var app = express();
 
@@ -29,7 +34,18 @@ app.get("/articulo",function(req, res){
 	//PARA LA RUTA localhost:8080/inicio	
 	//res.send("hola!");
 	
-	res.render("articulo.html");	
+	//HACEMOS LA CONSULTA PARA BUSCAR EL PRIMER RENGLON
+	//buscamos el renglon cuyo id sea 1
+	modelos.Articulo.find(1).success(function(articulo){
+		//este metodo se ejecuta cuando encuentra algo
+		
+		console.log("se encontro articulo:" + articulo.titulo);		
+		res.render("articulo.html",{
+			//asigno el objeto articulo a la propiedad:
+			articuloPrincipal:articulo
+		});				
+	});
+			
 });
 
 //ESCUCHA LA PETICION A LA RUTA
