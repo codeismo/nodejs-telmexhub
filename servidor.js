@@ -148,10 +148,14 @@ app.get("/articulo/:articuloId([0-9]+)/editar", function(req, res) {
 
 	//recibimos el parametro para editar el articulo
 	var articuloId = req.params.articuloId;
+	//note que la bandera actualizado del query string
+	//solo viene si guardaron previamente un dato
+	var actualizado = req.query.actualizado;
 
 	modelos.Articulo.find(articuloId).success(function(articulo) {
 		res.render("articulo_editar.html",{
-			articulo:articulo
+			articulo:articulo,
+			actualizado:actualizado
 		});
 	});
 
@@ -180,7 +184,14 @@ app.post("/guardar-articulo", function(req, res) {
 		articulo.save().success(function(){
 			
 			//aqui ya se guardaron los cambios en la base			
-			res.send("cambios guardadoss");
+			//res.send("cambios guardadoss");
+			
+			//PATRON POST/REDIRECT/GET
+			//le decimos al nav del usuaario que haga un http-redirect
+			//a la ruta http://localhost:8080/articulo/ID_ESTE_ARTICULO/editar
+			var url = "/articulo/" + articulo.id + "/editar?actualizado=true";
+			//HTTP-REDIRECT EN EXPRESS SE HACE con:
+			res.redirect(url);
 		});
 		
 	});

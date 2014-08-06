@@ -7,6 +7,10 @@
 	<body>
 		<h1>Editor de articulos</h1>
 		
+		{%if actualizado == 'true'%}
+		   DATOS ACTUALIZADOS!!
+		{%endif%}
+		
 		<form action="/guardar-articulo" method="post">
 			
 			<input type="hidden" name="id" value="{{articulo.id}}"/>
