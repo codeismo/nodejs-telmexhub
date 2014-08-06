@@ -2,6 +2,7 @@
 //USANDO NPM
 var express = require("express");
 var nunjucks = require("nunjucks");
+var bodyParser = require("body-parser");
 
 //---- REQUERIMOS NUESTROS MODULOS
 var modelos = require("./modelos/principal.js");
@@ -9,6 +10,9 @@ console.log("PRUEBA:" + modelos.PRUEBA);
 
 //INVOCAMOS A LA FUNCION DE EXPRESS PARA CREAR UN SERVIDOR WEB
 var app = express();
+
+//HABILITAMOS LOS PARAMETROS DEL TIPO POST para express
+app.use(bodyParser());
 
 //----------- CONFIGURAMOS NUNJUCKS -----------------
 // (sistema de templates)
@@ -140,3 +144,14 @@ app.get("/articulo/1/editar",function(req,res){
 	
 	res.render("articulo_editar.html");
 });
+
+//en el formulario enviamos los datos como una peticion http-post
+app.post("/guardar-articulo",function(req, res){
+	
+	var titulo = req.body.titulo;	
+	res.send("titulo:" + titulo);
+		
+});
+
+
+

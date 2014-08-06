@@ -16,6 +16,7 @@
   },
   "homepage": "https://github.com/codeismo/nodejs-telmexhub",
   "dependencies": {
+    "body-parser": "^1.6.1",
     "express": "^4.7.3",
     "nunjucks": "^1.0.5",
     "sequelize": "^1.7.9",
