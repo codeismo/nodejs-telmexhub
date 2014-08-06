@@ -20,6 +20,8 @@
 		  	   {{categoria.nombre}}&nbsp;
 		  	{%endfor%}
 		  </p>
+		  <p>Autor del articulo:{{articuloPrincipal.usuario.nombre}}</p>
+		  <p>Email del autor:{{articuloPrincipal.usuario.email}}</p>
 		  
 		  <h3>Comentarios:</h3>
 		  {%for comentario in articuloPrincipal.comentarios %}

@@ -1,4 +1,4 @@
-
+//CAMBIO! ahora
 var Sequelize = require("sequelize");
 
 //----- CONFIGURAR LA BASE DE DATOS con sequelize
@@ -106,6 +106,15 @@ Usuario.hasMany(Articulo,{
 	//cuando obtengan un objeto usuario
 	// pueden acceder a los articulos con usuario.articulos
 	as:"articulos"
+});
+
+// articulo le pertenece a un Usuario
+// TOMAMOS EL SENTIDO INVERSO DE LA RELACION 1-N
+Articulo.belongsTo(Usuario,{
+	foreignKey:"usuario_id",
+	//el parametro as me permite que al articulo puede acceder
+	//al usuario que tiene este articulo con articulo.usuario
+	as:"usuario"	
 });
 
 //-------------------- EJEMPLO MAPEO N-N -------------------

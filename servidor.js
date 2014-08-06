@@ -49,6 +49,9 @@ app.get("/articulo/:articuloId([0-9]+)", function(req, res) {
 		},{
 			model:modelos.Categoria,
 			as:"categorias"
+		},{
+			model:modelos.Usuario,
+			as:"usuario"
 		}]
 	}).success(function(articulo) {
 		//SI NO ENCUENTRA NADA articulo == null
