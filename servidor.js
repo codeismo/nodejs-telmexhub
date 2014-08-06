@@ -180,7 +180,7 @@ app.post("/guardar-articulo", function(req, res) {
 		//create es para crear un nuevo renglon en la base
 		//save lo usan para actualizar un renglo que YA EXISTE
 		modelos.Articulo.create({
-			id:20,
+			//id:20,
 			titulo:titulo,
 			contenido:contenido,
 			fecha_creacion:new Date(),

@@ -40,7 +40,10 @@ var Articulo = sequelize.define("Articulo",{
 		//LE INDICAMOS A SEQUELIZE CON primaryKey que esta es una col
 		//de la la llave primaria
 		primaryKey:true,
-		type:Sequelize.INTEGER
+		type:Sequelize.INTEGER,
+		//este parametro sirve para que la base genere de 
+		//manera automatica el siguiente valor para el id
+		autoIncrement:true
 	},
 	//le dice a sequelize que tenemos una columan titulo
 	//que es una cadena
