@@ -50,11 +50,25 @@ var Articulo = sequelize.define("Articulo",{
 	titulo:Sequelize.TEXT,
 	contenido:Sequelize.TEXT,
 	//Sequelize.DATE ES PARA FECHAS
+	//las fechas en javascript se representan con un 
+	//Date()
 	fecha_creacion:Sequelize.DATE
 },{
 	//tableName le dicen cual es la tabla de la base
 	//que esta asociada a este objeto
-	tableName:"articulos"
+	tableName:"articulos",
+	getterMethods:{
+		fecha:function(){
+			//getDataValue me permite acceder a las columnas
+			//de este modelo
+			var fecha = this.getDataValue("fecha_creacion");
+			
+			//DIA-MES-YEAR
+			var fechaConFormato = fecha.getDate() + "-" + fecha.getMonth() + "-" + fecha.getFullYear();
+			
+			return fechaConFormato; 
+		}
+	}
 });
 
 //-------- SOLUCION EJERCICIO MAPEOS ------------
