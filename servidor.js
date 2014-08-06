@@ -134,3 +134,9 @@ app.get("/blog", function(req, res) {
 	});
 
 });
+
+//ARMANDO NUESTRO EDITOR DE ARTICULOS
+app.get("/articulo/1/editar",function(req,res){
+	
+	res.render("articulo_editar.html");
+});
