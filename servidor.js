@@ -231,3 +231,29 @@ app.get("/articulo/crear", function(req, res) {
 	res.render("articulo_editar.html");
 });
 
+//localhost:8080/articulo/NUMERO/destruir destruye ese articulo
+app.get("/articulo/:articuloId([0-9]+)/destruir",function(req,res){
+	
+	var articuloId = req.params.articuloId;
+	
+	//buscamos el articulo a destruir
+	modelos.Articulo.find(articuloId).success(function(articulo){
+		
+		//obtener todos los comentarios del articulo
+		//y aplicar el metodo destroy en esos comentarios
+		// ahora si destruimos el articulo
+		
+		//ubicado el articulo lo destruimos
+		articulo.destroy().success(function(){
+			//una vea que destruyo el renglon se ejecuta
+			//esta funcion
+			
+			res.send("articulo " + articuloId + " fue destruido");
+		});		
+	});	
+});
+
+
+
+
+
