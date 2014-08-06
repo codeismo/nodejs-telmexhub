@@ -148,10 +148,6 @@ Usuario.hasOne(DatosUsuario,{
 	as:"datosUsuario"
 });
 
-DatosUsuario.hasOne(Usuario,{
-	foreignKey:"usuario_id",
-	as:"usuario"
-});
 
 //EXPORTANDO EL MODELO DE LA TABLA ARTICULO
 module.exports.Articulo = Articulo;

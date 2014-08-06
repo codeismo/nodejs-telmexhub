@@ -143,6 +143,7 @@ app.get("/blog", function(req, res) {
 
 });
 
+
 //ARMANDO NUESTRO EDITOR DE ARTICULOS
 app.get("/articulo/:articuloId([0-9]+)/editar", function(req, res) {
 
