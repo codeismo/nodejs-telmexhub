@@ -9,6 +9,15 @@ CREATE TABLE usuarios(
 );
 
 
+CREATE TABLE datos_usuarios(
+   id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,   
+   usuario_id INTEGER,
+   biografia VARCHAR(100),
+   fecha_registro DATE,   
+   FOREIGN KEY(usuario_id) REFERENCES datos_usuarios
+);
+
+
 /************** TABLAS PARA EJERCICIO ONE-TO-MANY ***************/
 
 CREATE TABLE articulos(
@@ -51,6 +60,9 @@ CREATE TABLE categorias_articulos(
 
 INSERT INTO usuarios( nombre, email, password) VALUES('Juan', 'juan@email.com','1234');
 INSERT INTO usuarios( nombre, email, password) VALUES('Luis', 'luis@email.com','1234');
+
+INSERT INTO datos_usuarios(usuario_id, biografia, fecha_registro) VALUES(1,'biografia usuario 1','2013-10-24');
+INSERT INTO datos_usuarios(usuario_id, biografia, fecha_registro) VALUES(2,'biografia usuario 2','2013-10-24');
 
 
 /************** DATOS PARA EJERCICIO ONE-TO-MANY ***************/
