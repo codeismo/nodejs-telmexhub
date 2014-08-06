@@ -162,10 +162,28 @@ app.post("/guardar-articulo", function(req, res) {
 
 	//req.params = parametros en las rutas
 	//req.query = parametros en forma de query string
+	var id = req.body.id;
 	var titulo = req.body.titulo;
 	var contenido = req.body.contenido;
-
-	res.send("titulo:" + titulo);
+	var usuario_id = req.body.usuario_id;
+	
+	modelos.Articulo.find(id).success(function(articulo){
+		//encontramos el articulo que vamos actualizar
+		
+		//sobreescribimos el titulo del articulo en la base
+		//por el nuevo titulo que me paso el usuario
+		articulo.titulo = titulo;
+		articulo.contenido = contenido;
+		
+		//save actualiza los cambios para este renglon de la tabla
+		//que encontramos
+		articulo.save().success(function(){
+			
+			//aqui ya se guardaron los cambios en la base			
+			res.send("cambios guardadoss");
+		});
+		
+	});
 
 });
 

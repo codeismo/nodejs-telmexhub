@@ -9,6 +9,9 @@
 		
 		<form action="/guardar-articulo" method="post">
 			
+			<input type="hidden" name="id" value="{{articulo.id}}"/>
+			<input type="hidden" name="usuario_id" value="{{articulo.usuario_id}}"/>
+			
 			<div>
 				titulo:<input type="text" name="titulo" value="{{articulo.titulo}}"/>				
 			</div>
