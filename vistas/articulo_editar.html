@@ -8,11 +8,12 @@
 		<h1>Editor de articulos</h1>
 		
 		<form action="/guardar-articulo" method="post">
+			
 			<div>
-				titulo:<input type="text" name="titulo"/>				
+				titulo:<input type="text" name="titulo" value="{{articulo.titulo}}"/>				
 			</div>
 			<div>
-				contenido:<textarea name="contenido"></textarea>
+				contenido:<textarea name="contenido">{{articulo.contenido}}</textarea>
 			</div>
 			<input type="submit" value="Enviar!"/>
 			
