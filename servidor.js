@@ -143,7 +143,6 @@ app.get("/blog", function(req, res) {
 
 });
 
-
 //ARMANDO NUESTRO EDITOR DE ARTICULOS
 app.get("/articulo/:articuloId([0-9]+)/editar", function(req, res) {
 
@@ -154,9 +153,9 @@ app.get("/articulo/:articuloId([0-9]+)/editar", function(req, res) {
 	var actualizado = req.query.actualizado;
 
 	modelos.Articulo.find(articuloId).success(function(articulo) {
-		res.render("articulo_editar.html",{
-			articulo:articulo,
-			actualizado:actualizado
+		res.render("articulo_editar.html", {
+			articulo : articulo,
+			actualizado : actualizado
 		});
 	});
 
@@ -171,31 +170,64 @@ app.post("/guardar-articulo", function(req, res) {
 	var titulo = req.body.titulo;
 	var contenido = req.body.contenido;
 	var usuario_id = req.body.usuario_id;
-	
-	modelos.Articulo.find(id).success(function(articulo){
-		//encontramos el articulo que vamos actualizar
-		
-		//sobreescribimos el titulo del articulo en la base
-		//por el nuevo titulo que me paso el usuario
-		articulo.titulo = titulo;
-		articulo.contenido = contenido;
-		
-		//save actualiza los cambios para este renglon de la tabla
-		//que encontramos
-		articulo.save().success(function(){
-			
-			//aqui ya se guardaron los cambios en la base			
-			//res.send("cambios guardadoss");
-			
-			//PATRON POST/REDIRECT/GET
-			//le decimos al nav del usuaario que haga un http-redirect
-			//a la ruta http://localhost:8080/articulo/ID_ESTE_ARTICULO/editar
-			var url = "/articulo/" + articulo.id + "/editar?actualizado=true";
-			//HTTP-REDIRECT EN EXPRESS SE HACE con:
-			res.redirect(url);
-		});
-		
-	});
 
+	console.log("id articulo a guardar:" + id);
+
+	if (id === "") {
+		console.log("se va crear un nuevo articulo");
+		//aqui va la logica para crear un nuevo articulo
+		
+		//create es para crear un nuevo renglon en la base
+		//save lo usan para actualizar un renglo que YA EXISTE
+		modelos.Articulo.create({
+			id:20,
+			titulo:titulo,
+			contenido:contenido,
+			fecha_creacion:new Date(),
+			usuario_id:1
+		}).success(function(articuloNuevo){
+			//articuloNuevo tiene el nuevo renglon que crearon
+			
+			//VOLVEMOS A UTILIZAR EL PATRON POST-REDIRECT-RESPONSE			
+			var url = "/articulo/" + articuloNuevo.id + "/editar?actualizado=true";
+			res.redirect(url);
+						
+		});
+
+	} else {
+		//id no viene vacio (es decir trae un numero)
+		//aqui va la logica para actualizar
+
+		modelos.Articulo.find(id).success(function(articulo) {
+			//encontramos el articulo que vamos actualizar
+
+			//sobreescribimos el titulo del articulo en la base
+			//por el nuevo titulo que me paso el usuario
+			articulo.titulo = titulo;
+			articulo.contenido = contenido;
+
+			//save actualiza los cambios para este renglon de la tabla
+			//que encontramos
+			articulo.save().success(function() {
+
+				//aqui ya se guardaron los cambios en la base
+				//res.send("cambios guardadoss");
+
+				//PATRON POST/REDIRECT/GET
+				//le decimos al nav del usuaario que haga un http-redirect
+				//a la ruta http://localhost:8080/articulo/ID_ESTE_ARTICULO/editar
+				var url = "/articulo/" + articulo.id + "/editar?actualizado=true";
+				//HTTP-REDIRECT EN EXPRESS SE HACE con:
+				res.redirect(url);
+			});
+
+		});
+	}
+});
+
+//ESTA RUTA ES PARA CREAR NUEVOS ARTICULOS
+app.get("/articulo/crear", function(req, res) {
+
+	res.render("articulo_editar.html");
 });
 
