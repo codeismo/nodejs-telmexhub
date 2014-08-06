@@ -78,6 +78,26 @@ var Categoria = sequelize.define("Categoria",{
 	tableName:"categorias"
 }); 
 
+//--------- SOLUCION EJERCICIO MAPEOS
+
+var Comentario = sequelize.define("Comentario",{
+	id:{
+		primaryKey:true,
+		type:Sequelize.INTEGER
+	},
+	comentario:Sequelize.TEXT
+},{
+	tableName:"comentarios"
+});
+
+//SOLUCION MAPEO 1-N
+Articulo.hasMany(Comentario,{
+	foreignKey:"articulo_id",
+	//as me permite obtener los comentarios del articulo
+	//haciendo articulo.comentarios
+	as:"comentarios"
+});
+
 // -------- EJEMPLO MAPEO 1-N ------------------
 // un usuario tiene muchos articulos
 Usuario.hasMany(Articulo,{
@@ -88,14 +108,26 @@ Usuario.hasMany(Articulo,{
 	as:"articulos"
 });
 
+//-------------------- EJEMPLO MAPEO N-N -------------------
+Articulo.hasMany(Categoria,{
+	foreignKey:"articulo_id",
+	as:"categorias",
+	//este parametro es solo para la relacion N-N
+	through:"categorias_articulos"
+});
+
+Categoria.hasMany(Articulo,{
+	foreignKey:"categoria_id",
+	as:"articulos",
+	through:"categorias_articulos"
+});
+
 
 //EXPORTANDO EL MODELO DE LA TABLA ARTICULO
 module.exports.Articulo = Articulo;
 module.exports.Usuario = Usuario;
 module.exports.Categoria = Categoria;
-
-
-
+module.exports.Comentario = Comentario;
 
 
 

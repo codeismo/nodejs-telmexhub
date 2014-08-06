@@ -15,6 +15,16 @@
 		  <h2>{{articuloPrincipal.titulo}}</h2>
 		  <p>{{articuloPrincipal.contenido}}</p>
 		  <p>FECHA:{{articuloPrincipal.fecha_creacion}}</p>
+		  <p>Categorias:
+		  	{%for categoria in articuloPrincipal.categorias %}
+		  	   {{categoria.nombre}}&nbsp;
+		  	{%endfor%}
+		  </p>
+		  
+		  <h3>Comentarios:</h3>
+		  {%for comentario in articuloPrincipal.comentarios %}
+		    <p>{{comentario.comentario}}</p>
+		  {%endfor%}
 		  
 		{%else%}
 		

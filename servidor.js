@@ -41,7 +41,16 @@ app.get("/articulo/:articuloId([0-9]+)", function(req, res) {
 
 	//HACEMOS LA CONSULTA PARA BUSCAR EL PRIMER RENGLON
 	//buscamos el renglon cuyo id sea 1
-	modelos.Articulo.find(articuloId).success(function(articulo) {
+	modelos.Articulo.find({
+		where:{id:articuloId},
+		include:[{
+			model:modelos.Comentario,
+			as:"comentarios"
+		},{
+			model:modelos.Categoria,
+			as:"categorias"
+		}]
+	}).success(function(articulo) {
 		//SI NO ENCUENTRA NADA articulo == null
 		//este metodo se ejecuta cuando encuentra algo
 
