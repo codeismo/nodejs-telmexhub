@@ -78,6 +78,9 @@ app.get("/usuario", function(req, res) {
 			//el parametro as debe de ser igual al del parametro
 			//as que usaron en principal.js
 			as:"articulos"
+		},{
+			model:modelos.DatosUsuario,
+			as:"datosUsuario"
 		}]
 	}).success(function(usuario) {
 		

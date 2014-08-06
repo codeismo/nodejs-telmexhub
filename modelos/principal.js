@@ -101,7 +101,7 @@ Articulo.hasMany(Comentario,{
 // -------- EJEMPLO MAPEO 1-N ------------------
 // un usuario tiene muchos articulos
 Usuario.hasMany(Articulo,{
-	//foreignKey es la col que sirve de pegamento en la relacion 1-N
+	//forei	gnKey es la col que sirve de pegamento en la relacion 1-N
 	foreignKey:"usuario_id",
 	//cuando obtengan un objeto usuario
 	// pueden acceder a los articulos con usuario.articulos
@@ -131,12 +131,29 @@ Categoria.hasMany(Articulo,{
 	through:"categorias_articulos"
 });
 
+var DatosUsuario = sequelize.define("DatosUsuario",{
+	id:{
+		primaryKey:true,
+		type:Sequelize.INTEGER
+	},
+	biografia:Sequelize.TEXT,
+	fecha_registro:Sequelize.DATE
+},{
+	tableName:"datos_usuarios"
+});
+
+//--------- EJEMPLO MAPEO 1-1
+Usuario.hasOne(DatosUsuario,{
+	foreignKey:"usuario_id",
+	as:"datosUsuario"
+});
+
 
 //EXPORTANDO EL MODELO DE LA TABLA ARTICULO
 module.exports.Articulo = Articulo;
 module.exports.Usuario = Usuario;
 module.exports.Categoria = Categoria;
 module.exports.Comentario = Comentario;
-
+module.exports.DatosUsuario = DatosUsuario;
 
 
