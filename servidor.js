@@ -7,7 +7,6 @@ var nunjucks = require("nunjucks");
 //TRABAJAMOS EN LA VERSION 4 DE EXPRESS
 var bodyParser = require("body-parser");
 
-
 //---- REQUERIMOS NUESTROS MODULOS
 var modelos = require("./modelos/principal.js");
 console.log("PRUEBA:" + modelos.PRUEBA);
@@ -18,7 +17,7 @@ var app = express();
 //HABILITAMOS LOS PARAMETROS DEL TIPO POST para express
 app.use(bodyParser.urlencoded({
 	//extended es para habilitar el parser para objetos JSON
-	extended:false
+	extended : false
 }));
 
 //----------- CONFIGURAMOS NUNJUCKS -----------------
@@ -183,22 +182,22 @@ app.post("/guardar-articulo", function(req, res) {
 	if (id === "") {
 		console.log("se va crear un nuevo articulo");
 		//aqui va la logica para crear un nuevo articulo
-		
+
 		//create es para crear un nuevo renglon en la base
 		//save lo usan para actualizar un renglo que YA EXISTE
 		modelos.Articulo.create({
 			//id:20,
-			titulo:titulo,
-			contenido:contenido,
-			fecha_creacion:new Date(),
-			usuario_id:1
-		}).success(function(articuloNuevo){
+			titulo : titulo,
+			contenido : contenido,
+			fecha_creacion : new Date(),
+			usuario_id : 1
+		}).success(function(articuloNuevo) {
 			//articuloNuevo tiene el nuevo renglon que crearon
-			
-			//VOLVEMOS A UTILIZAR EL PATRON POST-REDIRECT-RESPONSE			
+
+			//VOLVEMOS A UTILIZAR EL PATRON POST-REDIRECT-RESPONSE
 			var url = "/articulo/" + articuloNuevo.id + "/editar?actualizado=true";
 			res.redirect(url);
-						
+
 		});
 
 	} else {
@@ -226,24 +225,27 @@ app.post("/guardar-articulo", function(req, res) {
 				var url = "/articulo/" + articulo.id + "/editar?actualizado=true";
 				//HTTP-REDIRECT EN EXPRESS SE HACE con:
 				res.redirect(url);
-				
-			}).error(function(errores){
+
+			}).error(function(errores) {
 				//este codigo se ejecuta cuando hay un error al guardar este articulo
 				//puede ocurrir un error al romper un constraint de la base o cuando
 				//hay un error de validacion
 				//JSON.stringify nos muestra una represetnacion en forma de cadena
 				//de un objeto de javascripts
 				console.log(JSON.stringify(errores));
-				
-				res.render("articulo_editar.html",{
-					//le pasamos los parametro que queriamos guardar 
+
+				res.render("articulo_editar.html", {
+					//le pasamos los parametro que queriamos guardar
 					//originalmente
-					titulo:titulo,
-					contenido:contenido,
+					articulo : {
+						id:id,
+						titulo : titulo,
+						contenido : contenido,
+					},
 					//le pasamos la lista de errores
-					errores:errores
-				});				
-				
+					errores : errores
+				});
+
 			});
 
 		});
@@ -257,28 +259,24 @@ app.get("/articulo/crear", function(req, res) {
 });
 
 //localhost:8080/articulo/NUMERO/destruir destruye ese articulo
-app.get("/articulo/:articuloId([0-9]+)/destruir",function(req,res){
-	
+app.get("/articulo/:articuloId([0-9]+)/destruir", function(req, res) {
+
 	var articuloId = req.params.articuloId;
-	
+
 	//buscamos el articulo a destruir
-	modelos.Articulo.find(articuloId).success(function(articulo){
-		
+	modelos.Articulo.find(articuloId).success(function(articulo) {
+
 		//obtener todos los comentarios del articulo
 		//y aplicar el metodo destroy en esos comentarios
 		// ahora si destruimos el articulo
-		
+
 		//ubicado el articulo lo destruimos
-		articulo.destroy().success(function(){
+		articulo.destroy().success(function() {
 			//una vea que destruyo el renglon se ejecuta
 			//esta funcion
-			
+
 			res.send("articulo " + articuloId + " fue destruido");
-		});		
-	});	
+		});
+	});
 });
-
-
-
-
 

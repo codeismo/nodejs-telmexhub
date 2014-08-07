@@ -51,10 +51,53 @@ var Articulo = sequelize.define("Articulo",{
 		type:Sequelize.TEXT,
 		validate:{
 			//len == length valida si una cadena esta dentro cierto rango (longitud)
-			len:[5]
+			//len:[5]
+			//len:[5,100] == valida que la cadena este en un rango de 5 a 100
+			len:{
+				//args son los argumentos que originalmente le pasaban al validador
+				args:[5],
+				msg:"La longitud minima del titulo debe ser de 5 letras"
+			},
+			filtrarGroserias:function(titulo){
+				//la funcion recibe el valor a validar
+				var groserias = ["palabrota1","palabrota2","palabrota3"];
+				var groseriasEncontradas = [];
+				
+				//validamos que el campo titulo tenga texto
+				if(titulo !== null && titulo.length > 0){
+					
+					groserias.forEach(function(groseria){						
+						//SI ENCONTRAMOS UNA GROSERIA
+						if(titulo.search(groseria) !== -1){
+							//push agrega elementos a un arreglo de javascript
+							groseriasEncontradas.push(groseria);
+						}					
+					});					
+				}
+				
+				//si encontramos palabras prohibidas:
+				if(groseriasEncontradas.length > 0){
+					//entonces lanzamos un error
+					
+					//throw es keyword que nos permite lanzar errores
+					//EL MENSAJE QUE APARECE EN EL ERROR ES EL TEXTO QUE VIENE
+					//EN EL OBJETO ERROR
+					throw new Error("el titulo no puede contener las palabras:" + groseriasEncontradas);			
+				}				
+			}
 		}
 	},
-	contenido:Sequelize.TEXT,
+	
+	//=========== SOL EJERCICIO BREVE validaciones	
+	contenido:{
+		type:Sequelize.TEXT,
+		validate:{
+			len:{
+				args:[15,100],
+				msg:"el contenido debe tener una longitud de 15 a 1000 letras"
+			}
+		}
+	},
 	//Sequelize.DATE ES PARA FECHAS
 	//las fechas en javascript se representan con un 
 	//Date()
