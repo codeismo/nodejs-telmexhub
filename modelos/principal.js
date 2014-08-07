@@ -55,7 +55,7 @@ var Articulo = sequelize.define("Articulo",{
 			//len:[5,100] == valida que la cadena este en un rango de 5 a 100
 			len:{
 				//args son los argumentos que originalmente le pasaban al validador
-				args:[5],
+				args:[25],
 				msg:"La longitud minima del titulo debe ser de 5 letras"
 			},
 			filtrarGroserias:function(titulo){

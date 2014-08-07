@@ -3,30 +3,43 @@
 	<head>
 		<meta charset="utf-8"/>
 		<title>Blog</title>
+		<style>
+			/*SELECTOR DE CSS de clase*/
+			.error-validacion {
+				color: red;
+			}
+		</style>
 	</head>
 	<body>
 		<h1>Editor de articulos</h1>
-		
+
 		{%if actualizado == 'true'%}
-		   DATOS ACTUALIZADOS!!
+		DATOS ACTUALIZADOS!!
 		{%endif%}
-		
+
 		<form action="/guardar-articulo" method="post">
-			
+
 			<input type="hidden" name="id" value="{{articulo.id}}"/>
 			<input type="hidden" name="usuario_id" value="{{articulo.usuario_id}}"/>
-			
+
 			<div>
-				titulo:<input type="text" name="titulo" value="{{articulo.titulo}}"/>
-				<div>{{errores.titulo}}</div>				
+				titulo:
+				<input type="text" name="titulo" value="{{articulo.titulo}}"/>
+				{%for error in errores.titulo%}
+				<div class="error-validacion">
+					{{error}}
+				</div>
+				{%endfor%}
 			</div>
 			<div>
-				contenido:<textarea name="contenido">{{articulo.contenido}}</textarea>
-				<div>{{errores.contenido}}</div>
+				contenido:				<textarea name="contenido">{{articulo.contenido}}</textarea>
+				<div>
+					{{errores.contenido}}
+				</div>
 			</div>
 			<input type="submit" value="Enviar!"/>
-			
+
 		</form>
-			
+
 	</body>
 </html>
