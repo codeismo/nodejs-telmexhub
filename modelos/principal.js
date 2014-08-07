@@ -47,7 +47,13 @@ var Articulo = sequelize.define("Articulo",{
 	},
 	//le dice a sequelize que tenemos una columan titulo
 	//que es una cadena
-	titulo:Sequelize.TEXT,
+	titulo:{
+		type:Sequelize.TEXT,
+		validate:{
+			//len == length valida si una cadena esta dentro cierto rango (longitud)
+			len:[5]
+		}
+	},
 	contenido:Sequelize.TEXT,
 	//Sequelize.DATE ES PARA FECHAS
 	//las fechas en javascript se representan con un 
@@ -64,7 +70,7 @@ var Articulo = sequelize.define("Articulo",{
 			var fecha = this.getDataValue("fecha_creacion");
 			
 			//DIA-MES-YEAR
-			var fechaConFormato = fecha.getDate() + "-" + fecha.getMonth() + "-" + fecha.getFullYear();
+			var fechaConFormato = fecha.getDate() + "-" + (fecha.getMonth()+1) + "-" + fecha.getFullYear();
 			
 			return fechaConFormato; 
 		}

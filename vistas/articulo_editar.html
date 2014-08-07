@@ -17,7 +17,8 @@
 			<input type="hidden" name="usuario_id" value="{{articulo.usuario_id}}"/>
 			
 			<div>
-				titulo:<input type="text" name="titulo" value="{{articulo.titulo}}"/>				
+				titulo:<input type="text" name="titulo" value="{{articulo.titulo}}"/>
+				<div>{{errores.titulo}}</div>				
 			</div>
 			<div>
 				contenido:<textarea name="contenido">{{articulo.contenido}}</textarea>

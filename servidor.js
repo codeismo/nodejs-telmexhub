@@ -226,6 +226,24 @@ app.post("/guardar-articulo", function(req, res) {
 				var url = "/articulo/" + articulo.id + "/editar?actualizado=true";
 				//HTTP-REDIRECT EN EXPRESS SE HACE con:
 				res.redirect(url);
+				
+			}).error(function(errores){
+				//este codigo se ejecuta cuando hay un error al guardar este articulo
+				//puede ocurrir un error al romper un constraint de la base o cuando
+				//hay un error de validacion
+				//JSON.stringify nos muestra una represetnacion en forma de cadena
+				//de un objeto de javascripts
+				console.log(JSON.stringify(errores));
+				
+				res.render("articulo_editar.html",{
+					//le pasamos los parametro que queriamos guardar 
+					//originalmente
+					titulo:titulo,
+					contenido:contenido,
+					//le pasamos la lista de errores
+					errores:errores
+				});				
+				
 			});
 
 		});
