@@ -55,6 +55,17 @@ nunjucks.configure(__dirname + "/vistas", {
 //LEVANTAMOS AL SERVIDOR EN EL PUERTO 8080
 app.listen(8080);
 
+//----------- AGREGREGAR LA LOGICA PARA LOS MIDDLEWARES DE EXPRESS --------
+//req = request
+//res == response
+//el tercer argumento es la siguiente funcio en el stack de middlewares
+function validarSesion(req, res, siguienteFuncion){
+	
+	console.log("validando sesion del usuario");
+	siguienteFuncion();	
+}
+
+
 //DEFINIR RUTAS PARA MI PROYECTO WEB
 // localhost:8080/articulo/NUMERO
 // [0-9]+   = ES UN EXPR REGULAR QUE HACE MATCH DE NUMEROS ENTEROS
@@ -172,7 +183,9 @@ app.get("/blog", function(req, res) {
 });
 
 //ARMANDO NUESTRO EDITOR DE ARTICULOS
-app.get("/articulo/:articuloId([0-9]+)/editar", function(req, res) {
+app.get("/articulo/:articuloId([0-9]+)/editar",validarSesion, function(req, res) {
+	
+	console.log("entrando a ruta editar articulo");
 
 	//recibimos el parametro para editar el articulo
 	var articuloId = req.params.articuloId;
