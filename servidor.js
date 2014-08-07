@@ -56,6 +56,41 @@ nunjucks.configure(__dirname + "/vistas", {
 app.listen(8080);
 
 //----------- AGREGREGAR LA LOGICA PARA LOS MIDDLEWARES DE EXPRESS --------
+
+//este middleware valida que un usuario sea dueno de un articulo en particular
+function validarPertenenciaArticulo(req, res, siguienteFuncion){
+	//accedemos al id del articulo que quieren editar
+	var articuloId = req.params.articuloId;
+	
+	//buscamos el articulo que quieren editar
+	modelos.Articulo.find({
+		where:{
+			id:articuloId
+		},
+		//del articulo obtenemos tambien el usuario dueno
+		include:[{
+			model:modelos.Usuario,
+			as:"usuario"
+		}]
+	}).success(function(articulo){
+		
+		//checamos si este articulo su usuario es el mismo que el usuario 
+		//que esta logeado
+		if(articulo.usuario.id === req.session.usuarioLogeado.id){
+			
+			//si el usuario tiene permisos lo dejamos pasar
+			siguienteFuncion();			
+		} else {
+			
+			//SI EL USUARIO NO TIENE PERMISOS, NO LO DEJAMOS PASAR			
+			res.send("NO TIENES PERMISOS PARA EDITAR EL ARTICULO:" + articulo.id);
+		}
+		
+	});
+	
+}
+
+
 //req = request
 //res == response
 //el tercer argumento es la siguiente funcio en el stack de middlewares
@@ -192,7 +227,7 @@ app.get("/blog", function(req, res) {
 });
 
 //ARMANDO NUESTRO EDITOR DE ARTICULOS
-app.get("/articulo/:articuloId([0-9]+)/editar", validarSesion, function(req, res) {
+app.get("/articulo/:articuloId([0-9]+)/editar", validarSesion,validarPertenenciaArticulo, function(req, res) {
 
 	console.log("entrando a ruta editar articulo");
 
@@ -297,7 +332,7 @@ app.post("/guardar-articulo", function(req, res) {
 });
 
 //ESTA RUTA ES PARA CREAR NUEVOS ARTICULOS
-app.get("/articulo/crear", function(req, res) {
+app.get("/articulo/crear",validarSesion, function(req, res) {
 
 	res.render("articulo_editar.html");
 });
@@ -366,12 +401,3 @@ app.post("/autentificar", function(req, res) {
 	});
 
 });
-
-
-//---------------- ESTAMOS EN UN EJERCICIO BREVE ----------------- 
-
-
-
-
-
-
