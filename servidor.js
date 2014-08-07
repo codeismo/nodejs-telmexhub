@@ -302,3 +302,42 @@ app.get("/articulo/:articuloId([0-9]+)/destruir", function(req, res) {
 	});
 });
 
+//=-------------- INICIA LOGICA PARA EL LOGIN ---------------
+
+app.get("/login",function(req,res){
+	res.render("login.html");
+});
+
+app.post("/autentificar",function(req,res){
+	
+	//recuerden que los parametros del post los toman del body
+	var email = req.body.email;
+	var password = req.body.password;
+	
+	modelos.Usuario.find({
+		where:{
+			//LO SIGUIENTE ES EQUIVALENTE HACER UNA OPERACION SQL CON UN WHERE Y UN AND 
+			email:email,
+			password:password
+		}
+	}).success(function(usuarioEncontrado){
+		
+		//el usuario con ese password y ese email NO EXISTEN!!
+		if(usuarioEncontrado === null){
+			//si no existe el usuario le mostramos otra la vista de login.html
+			res.render("login.html",{
+				error:true
+			});
+			
+		} else {
+			//ese usuario si existe
+			
+		}
+		
+		
+	});
+	
+});
+
+
+

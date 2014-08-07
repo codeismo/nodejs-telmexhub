@@ -6,6 +6,10 @@
 	</head>
 	<body>
 		
+		{%if error == true%}
+		   EMAIL O PASSWORD NO SON VALIDOS!
+		{%endif%}
+		
 		<form action="/autentificar" method="post">
 			<div>
 				email:<input name="email" type="text"/>
