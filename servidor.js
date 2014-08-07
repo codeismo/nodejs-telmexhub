@@ -2,6 +2,9 @@
 //USANDO NPM
 var express = require("express");
 var nunjucks = require("nunjucks");
+//en la version 3 EXPRESS el body-parser TIENE UN PROBLEMA DE SEGURIDAD
+//NUNCA USEN EN LA VERSION 3 DE EXPRESS BODY PARSER
+//TRABAJAMOS EN LA VERSION 4 DE EXPRESS
 var bodyParser = require("body-parser");
 
 
@@ -13,7 +16,10 @@ console.log("PRUEBA:" + modelos.PRUEBA);
 var app = express();
 
 //HABILITAMOS LOS PARAMETROS DEL TIPO POST para express
-app.use(bodyParser());
+app.use(bodyParser.urlencoded({
+	//extended es para habilitar el parser para objetos JSON
+	extended:false
+}));
 
 //----------- CONFIGURAMOS NUNJUCKS -----------------
 // (sistema de templates)
