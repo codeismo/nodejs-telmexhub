@@ -7,17 +7,17 @@ var expressSession = require("express-session");
 var sesion = expressSession({
 	//secret lo usa el servidor para genera un valor aleatoriao que asigna
 	//a la cookie de sesion
-	secret:"lkjsfffs",
+	secret : "lkjsfffs",
 	// este parametro es el nombre de la cookie de session
-	key:"sesionServidor",
+	key : "sesionServidor",
 	//son para que cree siempre una sesion nueva para el usuario
-	resave:true,
-	saveUninitialized:true,
+	resave : true,
+	saveUninitialized : true,
 	//configuramos el tiempo de la cookie de sesion
-	cookie:{
+	cookie : {
 		//max Age es el tiempo que dura la sesion de un usuario (milisegundos)
 		//la cookie de sesion dura 30 dias!!!
-		maxAge:1000*60*60*24*20
+		maxAge : 1000 * 60 * 60 * 24 * 20
 	}
 });
 
@@ -59,12 +59,21 @@ app.listen(8080);
 //req = request
 //res == response
 //el tercer argumento es la siguiente funcio en el stack de middlewares
-function validarSesion(req, res, siguienteFuncion){
-	
-	console.log("validando sesion del usuario");
-	siguienteFuncion();	
-}
+function validarSesion(req, res, siguienteFuncion) {
 
+	console.log("validando sesion del usuario");
+	//protegemos rutas checando si existe en la sesion el objeto
+	//usuarioLogeado
+	//tenemos que usar un keyword de javscript que se llama typeof
+	if ( typeof req.session.usuarioLogeado === "undefined") {
+		//SI EL USUARIO NO SE A LOGEADO NO LO DEJAMOS PASAR
+		//Y LO REENVIAMOS A /login
+		res.redirect("/login");
+	} else {
+		//SI YA ESTA LOGEADO
+		siguienteFuncion();
+	}
+}
 
 //DEFINIR RUTAS PARA MI PROYECTO WEB
 // localhost:8080/articulo/NUMERO
@@ -183,8 +192,8 @@ app.get("/blog", function(req, res) {
 });
 
 //ARMANDO NUESTRO EDITOR DE ARTICULOS
-app.get("/articulo/:articuloId([0-9]+)/editar",validarSesion, function(req, res) {
-	
+app.get("/articulo/:articuloId([0-9]+)/editar", validarSesion, function(req, res) {
+
 	console.log("entrando a ruta editar articulo");
 
 	//recibimos el parametro para editar el articulo
@@ -273,7 +282,7 @@ app.post("/guardar-articulo", function(req, res) {
 					//le pasamos los parametro que queriamos guardar
 					//originalmente
 					articulo : {
-						id:id,
+						id : id,
 						titulo : titulo,
 						contenido : contenido,
 					},
@@ -317,47 +326,52 @@ app.get("/articulo/:articuloId([0-9]+)/destruir", function(req, res) {
 
 //=-------------- INICIA LOGICA PARA EL LOGIN ---------------
 
-app.get("/login",function(req,res){
+app.get("/login", function(req, res) {
 	res.render("login.html");
 });
 
-app.post("/autentificar",function(req,res){
-	
+app.post("/autentificar", function(req, res) {
+
 	//recuerden que los parametros del post los toman del body
 	var email = req.body.email;
 	var password = req.body.password;
-	
+
 	modelos.Usuario.find({
-		where:{
-			//LO SIGUIENTE ES EQUIVALENTE HACER UNA OPERACION SQL CON UN WHERE Y UN AND 
-			email:email,
-			password:password
+		where : {
+			//LO SIGUIENTE ES EQUIVALENTE HACER UNA OPERACION SQL CON UN WHERE Y UN AND
+			email : email,
+			password : password
 		}
-	}).success(function(usuarioEncontrado){
-		
+	}).success(function(usuarioEncontrado) {
+
 		//el usuario con ese password y ese email NO EXISTEN!!
-		if(usuarioEncontrado === null){
+		if (usuarioEncontrado === null) {
 			//si no existe el usuario le mostramos otra la vista de login.html
-			res.render("login.html",{
-				error:true
+			res.render("login.html", {
+				error : true
 			});
-			
+
 		} else {
 			//ese usuario si existe
 			//CREAMOS UNA SESION EN EL SERVIDOR
-			
+
 			req.session.usuarioLogeado = {
-				id:usuarioEncontrado.id,
-				email:usuarioEncontrado.email
+				id : usuarioEncontrado.id,
+				email : usuarioEncontrado.email
 			};
-			
-			res.send("usuario logeado correctamente!!");			
+
+			res.send("usuario logeado correctamente!!");
 		}
-		
-		
+
 	});
-	
+
 });
+
+
+//---------------- ESTAMOS EN UN EJERCICIO BREVE ----------------- 
+
+
+
 
 
 
