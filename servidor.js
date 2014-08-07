@@ -331,7 +331,14 @@ app.post("/autentificar",function(req,res){
 			
 		} else {
 			//ese usuario si existe
+			//CREAMOS UNA SESION EN EL SERVIDOR
 			
+			req.session.usuarioLogeado = {
+				id:usuarioEncontrado.id,
+				email:usuarioEncontrado.email
+			};
+			
+			res.send("usuario logeado correctamente!!");			
 		}
 		
 		
