@@ -2,6 +2,25 @@
 //USANDO NPM
 var express = require("express");
 var nunjucks = require("nunjucks");
+var expressSession = require("express-session");
+
+var sesion = expressSession({
+	//secret lo usa el servidor para genera un valor aleatoriao que asigna
+	//a la cookie de sesion
+	secret:"lkjsfffs",
+	// este parametro es el nombre de la cookie de session
+	key:"sesionServidor",
+	//son para que cree siempre una sesion nueva para el usuario
+	resave:true,
+	saveUninitialized:true,
+	//configuramos el tiempo de la cookie de sesion
+	cookie:{
+		//max Age es el tiempo que dura la sesion de un usuario (milisegundos)
+		//la cookie de sesion dura 30 dias!!!
+		maxAge:1000*60*60*24*20
+	}
+});
+
 //en la version 3 EXPRESS el body-parser TIENE UN PROBLEMA DE SEGURIDAD
 //NUNCA USEN EN LA VERSION 3 DE EXPRESS BODY PARSER
 //TRABAJAMOS EN LA VERSION 4 DE EXPRESS
@@ -13,6 +32,9 @@ console.log("PRUEBA:" + modelos.PRUEBA);
 
 //INVOCAMOS A LA FUNCION DE EXPRESS PARA CREAR UN SERVIDOR WEB
 var app = express();
+
+//asignamos la sesion al servidor de express
+app.use(sesion);
 
 //HABILITAMOS LOS PARAMETROS DEL TIPO POST para express
 app.use(bodyParser.urlencoded({
@@ -198,7 +220,7 @@ app.post("/guardar-articulo", function(req, res) {
 			var url = "/articulo/" + articuloNuevo.id + "/editar?actualizado=true";
 			res.redirect(url);
 
-		});
+		}).error();
 
 	} else {
 		//id no viene vacio (es decir trae un numero)
