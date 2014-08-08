@@ -105,6 +105,11 @@ function validarPertenenciaArticulo(req, res, siguienteFuncion) {
 //res == response
 //el tercer argumento es la siguiente funcio en el stack de middlewares
 function validarSesion(req, res, siguienteFuncion) {
+	
+	//keyword es de javascript y de hecho les sirve para javascript
+	//del lado web como del lado de node.js
+	//SIRVE PARA MARCAR BREAKPOINTS
+	debugger;
 
 	console.log("validando sesion del usuario");
 	//protegemos rutas checando si existe en la sesion el objeto
