@@ -131,7 +131,12 @@ var Articulo = sequelize.define("Articulo",{
 				
 				//crea un nuevo articulo (usando los parametros
 			    // que pasan al objeto articulo)
-				Articulo.create(articulo).success(function(articuloNuevo){
+				Articulo.create(articulo,{
+					//le pasamos la transaccion al metodo create
+					//si transaction == undefined, sequelize
+					//automaticamente usa una transaccion por default
+					transaction:opciones.transaction
+				}).success(function(articuloNuevo){
 					
 					//yo espero que exito sea la funcion de callback para
 					//este metodo
@@ -246,5 +251,9 @@ module.exports.Usuario = Usuario;
 module.exports.Categoria = Categoria;
 module.exports.Comentario = Comentario;
 module.exports.DatosUsuario = DatosUsuario;
-
+//hacemos visible el objeto sequelize que representa
+//la conexion a la base de datos
+//necesito este objeto que sea visible por que este tiene un metodo
+//para crear transacciones
+module.exports.sequelize = sequelize;
 
