@@ -60,7 +60,18 @@ app.listen(8080);
 //este middleware valida que un usuario sea dueno de un articulo en particular
 function validarPertenenciaArticulo(req, res, siguienteFuncion){
 	//accedemos al id del articulo que quieren editar
+	//yo espero que el id venga como un parametro de la ruta dinamica
 	var articuloId = req.params.articuloId;
+	
+	//si dentro de la ruta NO VIENE EL PARAMETRO ID DEL ARTICULO
+	//SIGNIFICA QUE ESTE MIDDLEWARE LO ESTA USANDO UN METODO POST
+	if(typeof articuloId === "undefined"){
+		//el metodo post que usamos para guardar un articulo,
+		//envia el id del articulo en una peticion post
+		//(viene req.body)
+		articuloId = req.body.id;
+		console.log("tomamos el id del post:" + articuloId);
+	}
 	
 	//buscamos el articulo que quieren editar
 	modelos.Articulo.find({
@@ -247,7 +258,9 @@ app.get("/articulo/:articuloId([0-9]+)/editar", validarSesion,validarPertenencia
 });
 
 //en el formulario enviamos los datos como una peticion http-post
-app.post("/guardar-articulo", function(req, res) {
+//VALIDAMOS QUE LA SESION EXISTA TAMBIEN PARA ESTA PETICION POST
+//QUE ES PARA GUARDAR UN ARTICULO
+app.post("/guardar-articulo",validarSesion,validarPertenenciaArticulo, function(req, res) {
 
 	//req.params = parametros en las rutas
 	//req.query = parametros en forma de query string
