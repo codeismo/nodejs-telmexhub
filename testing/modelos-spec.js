@@ -15,6 +15,43 @@ describe("Modelos Articulo", function() {
 	//done === es un parametro que se usa solo cuando
 	//tienen que probar metodos asincronos
 
+	//creamos otra prueba para checar que realmente crearOActualizar
+	//actualiza renglones
+	it("deberia actualizar un articulo existente", function(done) {
+
+		//abrimos una transaccion para posteriormente hacer
+		//un rollback
+		modelos.sequelize.transaction(function(t) {
+			//recuerden que t= transaccion
+
+			modelos.Articulo.crearOActualizar({
+				id : 1,
+				contenido : "contenido prueba actualizar",
+				titulo : "titulo prueba actualizar"
+			}, {
+				//le pasamos la transaccion
+				transaction : t,
+				//ponemos la funcion de callback cuando crearOActualizar
+				//termina
+				exito : function(articuloActualizado) {
+					//hacemos rollback a los cambios de la prueba
+					t.rollback().success(function() {
+
+						//recibimos el articulo actualizado
+
+						//hacemos un assertion para probar que realmente el articulo
+						//se actualizo
+						expect(articuloActualizado.contenido).toBe("contenido prueba actualizar");
+						//finalizamos el test asincrono
+						done();
+					});
+				}
+			});
+
+		});
+
+	});
+
 	it("deberia crear un articulo nuevo", function(done) {
 
 		//crea una nueva transaccion en la base

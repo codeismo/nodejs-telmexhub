@@ -143,6 +143,33 @@ var Articulo = sequelize.define("Articulo",{
 					opciones.exito(articuloNuevo);
 					
 				});
+			} else {
+				//AQUI ACTUALIZAMOS UN RENGLON QUE YA EXISTE
+				
+				//buscamos el renglon que vamos a actualizar
+				Articulo.find(articulo.id,{
+					//le passamos la transaccion al metodo find
+					transaction:opciones.transaction
+				}).success(function(articuloEncontrado){
+					//una vez encontrado el articulo que vamos actualizar,
+					//actualizamos sus propiedades
+					articuloEncontrado.titulo = articulo.titulo;
+					articuloEncontrado.contenido = articulo.contenido;
+					
+					//recuerden que save nos permite actualizar un renglon
+					//de la tabla
+					articuloEncontrado.save({
+						//le pasamos la transaccion al metodo save
+						transaction:opciones.transaction
+					}).success(function(){
+						//en el caso de actualizar o de crear
+						//en ambos casos la funcion exito recibe ese articulo
+						//que creamos o actualizamos
+						opciones.exito(articuloEncontrado);
+					});
+					
+				});
+				
 			}
 			
 			

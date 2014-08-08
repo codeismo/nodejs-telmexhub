@@ -295,6 +295,10 @@ app.post("/guardar-articulo", validarSesion, validarPertenenciaArticulo, functio
 	};
 
 	console.log("id articulo a guardar:" + id);
+	
+	//QUE TENDRIAN QUE CAMBIAR EN ESTE CODIGO
+	//SABIENDO QUE YA FUCNION crearOActualizar 
+	//PARA SUSTITUIR EL SIGUIENTE BLOQUE IF
 
 	if (id === "") {
 		console.log("se va crear un nuevo articulo");
