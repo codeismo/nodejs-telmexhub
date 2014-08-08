@@ -58,49 +58,48 @@ app.listen(8080);
 //----------- AGREGREGAR LA LOGICA PARA LOS MIDDLEWARES DE EXPRESS --------
 
 //este middleware valida que un usuario sea dueno de un articulo en particular
-function validarPertenenciaArticulo(req, res, siguienteFuncion){
+function validarPertenenciaArticulo(req, res, siguienteFuncion) {
 	//accedemos al id del articulo que quieren editar
 	//yo espero que el id venga como un parametro de la ruta dinamica
 	var articuloId = req.params.articuloId;
-	
+
 	//si dentro de la ruta NO VIENE EL PARAMETRO ID DEL ARTICULO
 	//SIGNIFICA QUE ESTE MIDDLEWARE LO ESTA USANDO UN METODO POST
-	if(typeof articuloId === "undefined"){
+	if ( typeof articuloId === "undefined") {
 		//el metodo post que usamos para guardar un articulo,
 		//envia el id del articulo en una peticion post
 		//(viene req.body)
 		articuloId = req.body.id;
 		console.log("tomamos el id del post:" + articuloId);
 	}
-	
+
 	//buscamos el articulo que quieren editar
 	modelos.Articulo.find({
-		where:{
-			id:articuloId
+		where : {
+			id : articuloId
 		},
 		//del articulo obtenemos tambien el usuario dueno
-		include:[{
-			model:modelos.Usuario,
-			as:"usuario"
+		include : [{
+			model : modelos.Usuario,
+			as : "usuario"
 		}]
-	}).success(function(articulo){
-		
-		//checamos si este articulo su usuario es el mismo que el usuario 
+	}).success(function(articulo) {
+
+		//checamos si este articulo su usuario es el mismo que el usuario
 		//que esta logeado
-		if(articulo.usuario.id === req.session.usuarioLogeado.id){
-			
+		if (articulo.usuario.id === req.session.usuarioLogeado.id) {
+
 			//si el usuario tiene permisos lo dejamos pasar
-			siguienteFuncion();			
+			siguienteFuncion();
 		} else {
-			
-			//SI EL USUARIO NO TIENE PERMISOS, NO LO DEJAMOS PASAR			
+
+			//SI EL USUARIO NO TIENE PERMISOS, NO LO DEJAMOS PASAR
 			res.send("NO TIENES PERMISOS PARA EDITAR EL ARTICULO:" + articulo.id);
 		}
-		
-	});
-	
-}
 
+	});
+
+}
 
 //req = request
 //res == response
@@ -238,7 +237,7 @@ app.get("/blog", function(req, res) {
 });
 
 //ARMANDO NUESTRO EDITOR DE ARTICULOS
-app.get("/articulo/:articuloId([0-9]+)/editar", validarSesion,validarPertenenciaArticulo, function(req, res) {
+app.get("/articulo/:articuloId([0-9]+)/editar", validarSesion, validarPertenenciaArticulo, function(req, res) {
 
 	console.log("entrando a ruta editar articulo");
 
@@ -260,7 +259,7 @@ app.get("/articulo/:articuloId([0-9]+)/editar", validarSesion,validarPertenencia
 //en el formulario enviamos los datos como una peticion http-post
 //VALIDAMOS QUE LA SESION EXISTA TAMBIEN PARA ESTA PETICION POST
 //QUE ES PARA GUARDAR UN ARTICULO
-app.post("/guardar-articulo",validarSesion,validarPertenenciaArticulo, function(req, res) {
+app.post("/guardar-articulo", validarSesion, validarPertenenciaArticulo, function(req, res) {
 
 	//req.params = parametros en las rutas
 	//req.query = parametros en forma de query string
@@ -268,6 +267,27 @@ app.post("/guardar-articulo",validarSesion,validarPertenenciaArticulo, function(
 	var titulo = req.body.titulo;
 	var contenido = req.body.contenido;
 	var usuario_id = req.body.usuario_id;
+
+	var manejadorErrores = function() {
+		//este codigo se ejecuta cuando hay un error al guardar este articulo
+		//puede ocurrir un error al romper un constraint de la base o cuando
+		//hay un error de validacion
+		//JSON.stringify nos muestra una represetnacion en forma de cadena
+		//de un objeto de javascripts
+		console.log(JSON.stringify(errores));
+
+		res.render("articulo_editar.html", {
+			//le pasamos los parametro que queriamos guardar
+			//originalmente
+			articulo : {
+				id : id,
+				titulo : titulo,
+				contenido : contenido,
+			},
+			//le pasamos la lista de errores
+			errores : errores
+		});
+	};
 
 	console.log("id articulo a guardar:" + id);
 
@@ -290,7 +310,7 @@ app.post("/guardar-articulo",validarSesion,validarPertenenciaArticulo, function(
 			var url = "/articulo/" + articuloNuevo.id + "/editar?actualizado=true";
 			res.redirect(url);
 
-		}).error();
+		}).error(manejadorErrores);
 
 	} else {
 		//id no viene vacio (es decir trae un numero)
@@ -318,34 +338,14 @@ app.post("/guardar-articulo",validarSesion,validarPertenenciaArticulo, function(
 				//HTTP-REDIRECT EN EXPRESS SE HACE con:
 				res.redirect(url);
 
-			}).error(function(errores) {
-				//este codigo se ejecuta cuando hay un error al guardar este articulo
-				//puede ocurrir un error al romper un constraint de la base o cuando
-				//hay un error de validacion
-				//JSON.stringify nos muestra una represetnacion en forma de cadena
-				//de un objeto de javascripts
-				console.log(JSON.stringify(errores));
-
-				res.render("articulo_editar.html", {
-					//le pasamos los parametro que queriamos guardar
-					//originalmente
-					articulo : {
-						id : id,
-						titulo : titulo,
-						contenido : contenido,
-					},
-					//le pasamos la lista de errores
-					errores : errores
-				});
-
-			});
+			}).error(manejadorErrores);
 
 		});
 	}
 });
 
 //ESTA RUTA ES PARA CREAR NUEVOS ARTICULOS
-app.get("/articulo/crear",validarSesion, function(req, res) {
+app.get("/articulo/crear", validarSesion, function(req, res) {
 
 	res.render("articulo_editar.html");
 });
