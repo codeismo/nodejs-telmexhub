@@ -55,7 +55,7 @@ var Articulo = sequelize.define("Articulo",{
 			//len:[5,100] == valida que la cadena este en un rango de 5 a 100
 			len:{
 				//args son los argumentos que originalmente le pasaban al validador
-				args:[25],
+				args:[5],
 				msg:"La longitud minima del titulo debe ser de 5 letras"
 			},
 			filtrarGroserias:function(titulo){
@@ -93,8 +93,8 @@ var Articulo = sequelize.define("Articulo",{
 		type:Sequelize.TEXT,
 		validate:{
 			len:{
-				args:[15,100],
-				msg:"el contenido debe tener una longitud de 15 a 1000 letras"
+				args:[5,100],
+				msg:"el contenido debe tener una longitud de 5 a 1000 letras"
 			}
 		}
 	},
@@ -116,6 +116,31 @@ var Articulo = sequelize.define("Articulo",{
 			var fechaConFormato = fecha.getDate() + "-" + (fecha.getMonth()+1) + "-" + fecha.getFullYear();
 			
 			return fechaConFormato; 
+		}
+	},
+	//classMethods me permite pegarle funciones al modelo de sequelize
+	//modelos.Articulo.crearOActualizar()
+	classMethods:{
+		crearOActualizar:function(articulo,opciones){
+			//yo espero que en articulo me pasen los parametros
+			//del objeto a crear o actualizar
+			
+			//si EN EL OBJETO articulo no vene el parametro id 
+			if(typeof articulo.id === "undefined" || articulo.id === ""){
+				//aqui ejecutamos la logica para CREAR UN NUEVO RENGLON
+				
+				//crea un nuevo articulo (usando los parametros
+			    // que pasan al objeto articulo)
+				Articulo.create(articulo).success(function(articuloNuevo){
+					
+					//yo espero que exito sea la funcion de callback para
+					//este metodo
+					opciones.exito(articuloNuevo);
+					
+				});
+			}
+			
+			
 		}
 	}
 });
